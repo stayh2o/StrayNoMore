@@ -1,0 +1,16 @@
+*.iml
+.gradle
+StrayNoMore/local.properties
+StrayNoMore/.idea/caches
+StrayNoMore/.idea/libraries
+StrayNoMore/.idea/modules.xml
+StrayNoMore/.idea/workspace.xml
+StrayNoMore/.idea/navEditor.xml
+StrayNoMore/.idea/assetWizardSettings.xml
+StrayNoMore/.DS_Store
+StrayNoMore/build
+StrayNoMore/captures
+StrayNoMore/.externalNativeBuild
+Server/ChatBot/StrayNoMore/*
+*.pickle
+*.sqlite3
