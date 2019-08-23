@@ -14,3 +14,4 @@ StrayNoMore/.externalNativeBuild
 Server/ChatBot/StrayNoMore/*
 *.pickle
 *.sqlite3
+Server/API/node_modules/*

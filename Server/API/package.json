@@ -1,0 +1,26 @@
+{
+    "name": "straynomore",
+    "version": "1.0.0",
+    "description": "An android application to reduce animal euthanasia",
+    "main": "server.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon server.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/stayh2o/StrayNoMore.git"
+    },
+    "author": "Roshan James, Chaitanyakrishna Dukkipaty, Kyle Lobo",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/stayh2o/StrayNoMore/issues"
+    },
+    "homepage": "https://github.com/stayh2o/StrayNoMore#readme",
+    "dependencies": {
+        "express": "^4.17.1",
+        "http": "0.0.0",
+        "mongoose": "^5.6.10",
+        "nodemon": "^1.19.1"
+    }
+}
