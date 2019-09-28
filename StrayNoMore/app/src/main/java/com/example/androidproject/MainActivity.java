@@ -29,10 +29,15 @@ import android.widget.Toast;
 import com.example.androidproject.ui.main.SectionsPagerAdapter;
 import com.example.androidproject.ViewPagerAdapter;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private static final int requestCode = 100;
+    private String email;
+    private String name;
+    private String phone;
     TabLayout tabLayout;
     ViewPager viewPager;
     Toolbar toolbar;
@@ -41,15 +46,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Intent data = getIntent();
+        email = data.getStringExtra("email_id");
+        name = data.getStringExtra("name");
+        phone = data.getStringExtra("phone");
         constraintLayout = findViewById(R.id.main_constraintLayout);
         tabLayout = findViewById(R.id.tabs);
         viewPager = findViewById(R.id.view_pager);
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_DENIED)
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, 2);
-
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.add(new FragmentsBots(),"Bots");
@@ -78,8 +83,14 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case R.id.account_menu:
                 Intent nintent = new Intent(this, MyAccount.class);
-                startActivity(nintent);
-                Toast.makeText(this, "You Clicked Account",Toast.LENGTH_LONG).show();
+                try {
+                    nintent.putExtra("email_id",email);
+                    nintent.putExtra("name",name);
+                    nintent.putExtra("phone",phone);
+                    startActivity(nintent);
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

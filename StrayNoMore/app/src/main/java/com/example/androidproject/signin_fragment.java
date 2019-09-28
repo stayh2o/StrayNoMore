@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,20 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -28,7 +43,7 @@ public class signin_fragment extends Fragment {
     public signin_fragment() {
         // Required empty public constructor
     }
-
+    private String url = "http://192.168.43.77:8081/login";
     private TextView donthaveaccount;
     private FrameLayout parentframeLayout;
     private EditText email;
@@ -61,15 +76,35 @@ public class signin_fragment extends Fragment {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String sigin_email = email.getText().toString();
-                String signin_password = password.getText().toString();
-                if(sigin_email.equals("test")  && signin_password.equals("test")){
-                    Intent intent = new Intent(getActivity(),MainActivity.class);
-                    startActivity(intent);
-                }
-                else {
-                    Toast.makeText(getActivity(),"Wrong Username or Password",Toast.LENGTH_LONG).show();
-                }
+                final String sigin_email = email.getText().toString();
+                final String signin_password = password.getText().toString();
+                HashMap data = new HashMap();
+                data.put("email_id",sigin_email);
+                data.put("password",signin_password);
+                RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data),
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                Intent intent = new Intent(getActivity(),MainActivity.class);
+                                try {
+                                    intent.putExtra("email_id",response.getString("email_id"));
+                                    intent.putExtra("name",response.getString("name"));
+                                    intent.putExtra("phone",response.getString("phone"));
+                                    startActivity(intent);
+                                }catch (JSONException e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(),"Wrong la Username or Password",Toast.LENGTH_LONG).show();
+                    }
+                }){
+
+                };
+                requestQueue.add(jsonObjectRequest);
             }
         });
 
