@@ -1,6 +1,7 @@
 package com.example.androidproject;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,6 +9,19 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -21,8 +35,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class FragmentsBots extends Fragment {
+    private String url = "http://192.168.43.77:5000/get";
     private final String filename = "encrypted_messages.bcm";
     public static final int message_query = 1;
     public static final int message_send = 2;
@@ -43,6 +60,7 @@ public class FragmentsBots extends Fragment {
         recyclerView.hasFixedSize();
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+
 
         botAdapter = new BotAdapter(getActivity(),this.list);
         recyclerView.setAdapter(botAdapter);
@@ -67,11 +85,40 @@ public class FragmentsBots extends Fragment {
     }
 
     private void sendMessage() {
-        String message = getMessage();
+        final String message = getMessage();
         editText.getText().clear();
         list.add(new Message(message, message_send));
-        list.add(new Message("I am good how are you?", message_query));
         refresh();
+        HashMap data = new HashMap();
+        data.put("msg",message);
+        RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.d("botmsg",response);
+                            list.add(new Message(response, message_query));
+                            }
+                        finally {
+                            refresh();
+                        }
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getActivity(),"Server Error",Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<>();
+                params.put("msg",message);
+                return params;
+            }
+        };
+        requestQueue.add(jsonObjectRequest);
        // Log.i("Messages", list.get(list.size()-1).getText());
     }
     private void refresh() {
