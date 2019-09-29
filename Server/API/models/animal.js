@@ -14,11 +14,11 @@ module.exports = mongoose.model("User", {
         default: "None"
     },
     found_lat:{
-        type: Float64Array,
+        type: Number,
         required: true
     },
     found_lon:{
-        type: Float64Array,
+        type: Number,
         required: true
     },
     status: {

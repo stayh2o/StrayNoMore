@@ -4,8 +4,8 @@ var http = require("http").Server(app);
 var bodyParser = require('body-parser')
 var mongoose = require('mongoose');
 var User = require('./models/user');
-var Ngo = require('./models/ngo');
-var Animal = require("./models/animal");
+// var Ngo = require('./models/ngo');
+// var Animal = require("./models/animal");
 
 
 mongoose.connect('mongodb://localhost/straynomore');
@@ -33,14 +33,14 @@ app.post('/login',(req,res)=>{
 
 app.post('/register',(req,res)=>{
     console.log(req.body.name)
-    var user = new User(req.body);
-    console.log(user);
-    user.save((error,tx)=>{
+    var per = new User(req.body);
+    console.log("Register");
+    per.save((error,tx)=>{
         if(error){
             res.sendStatus(404);
         }
         else{
-            res.send(user);
+            res.send(per);
         }
     })
 })
