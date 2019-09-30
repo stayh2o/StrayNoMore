@@ -34,7 +34,6 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private static final int requestCode = 100;
     private String email;
     private String name;
     private String phone;
@@ -42,14 +41,14 @@ public class MainActivity extends AppCompatActivity {
     ViewPager viewPager;
     Toolbar toolbar;
     ConstraintLayout constraintLayout;
+    private Intent data;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Intent data = getIntent();
-        email = data.getStringExtra("email_id");
-        name = data.getStringExtra("name");
-        phone = data.getStringExtra("phone");
+
+        data = getIntent();
+
         constraintLayout = findViewById(R.id.main_constraintLayout);
         tabLayout = findViewById(R.id.tabs);
         viewPager = findViewById(R.id.view_pager);
@@ -65,11 +64,24 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setCurrentItem(1);
         tabLayout.setupWithViewPager(viewPager);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        email = data.getStringExtra("email_id");
+        name = data.getStringExtra("name");
+        phone = data.getStringExtra("phone");
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.setting_menu, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
     }
 
     @Override

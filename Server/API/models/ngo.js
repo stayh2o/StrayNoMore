@@ -36,9 +36,5 @@ module.exports = mongoose.model("Ngo", {
     verified: {
         type: Boolean,
         default: false
-    },
-    password: {
-        type: String,
-        required: true
     }
 });

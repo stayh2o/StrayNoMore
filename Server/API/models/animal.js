@@ -1,13 +1,21 @@
 var mongoose = require('mongoose');
 //MongoDB schema for Animal
-module.exports = mongoose.model("User", {
+module.exports = mongoose.model("Animal", {
+    img_name:{
+        type: String
+    },
+    img_destination:{
+        type: String
+    },
     health_issue:{
         type: Array,
-        required: true
+       
     },
     found_by_user: {
+        type: String,   
+    },
+    landmark:{
         type: String,
-        required: true
     },
     found_by_ngo: {
         type:String,
@@ -15,11 +23,11 @@ module.exports = mongoose.model("User", {
     },
     found_lat:{
         type: Number,
-        required: true
+        
     },
     found_lon:{
         type: Number,
-        required: true
+       
     },
     status: {
         type: String,
