@@ -1,12 +1,124 @@
 [{
-    ngo_name: "",
-    address: "",
-    loc_coor_lat: "",
-    loc_coor_lon: "",
-    contact: "",
+    ngo_name: "Wild World",
+    address: "3-C 601 N G Sun City, Phase -3 Thakur Village, Thakur Village-Kandivali East, Mumbai - 400101, Near Gundecha School",
+    loc_coor_lat: "19°12'42.3\"N",
+    loc_coor_lon: "72°52'36.8\"E",
+    contact: "9152937772",
     capacity: "",
     cur_occ: "",
     no_occ: "",
     verified: "",
     password: ""
 },
+{
+    ngo_name: "Mahavir Ahinsa Sanskar Jagruti Sanstha",
+    address: "Shop No 19, Near Vikhroli Fatak, Vikhroli East, Mumbai - 400083, Opposite Godrej Hall",
+    loc_coor_lat: "19°06'35.4\"N",
+    loc_coor_lon: "72°55'45.2\"E",
+    contact: "9819412567",
+    capacity: "",
+    cur_occ: "",
+    no_occ: "",
+    verified: "",
+    password: ""
+},
+{
+    ngo_name: "PETA India",
+    address: "Juhu, Mumbai - 400049, P O Box No 28260",
+    loc_coor_lat: "19°06'23.2\"N",
+    loc_coor_lon: "72°49'34.0\"E",
+    contact: "2240727382",
+    capacity: "",
+    cur_occ: "",
+    no_occ: "",
+    verified: "",
+    password: ""
+},
+{
+    ngo_name: "Society For The Prevention Of Cruelty To Animals",
+    address: "NKT Compound, Kolshet Road, Azad Nagar-thane West, Thane - 400607, Besides Bhramand Complex, Behind Shani Temple, Opposite Bhavani Mata Mandir",
+    loc_coor_lat: "",
+    loc_coor_lon: "",
+    contact: "8767612344",
+    capacity: "",
+    cur_occ: "",
+    no_occ: "",
+    verified: "",
+    password: ""
+},
+{
+    ngo_name: "Karuna For Animals In Distress",
+    address: "",
+    loc_coor_lat: "",
+    loc_coor_lon: "",
+    contact: "9819100100",
+    capacity: "",
+    cur_occ: "",
+    no_occ: "",
+    verified: "",
+    password: ""
+},
+{
+    ngo_name: "Bombay Society For Prevention Of Cruelty To Animals",
+    address: "",
+    loc_coor_lat: "",
+    loc_coor_lon: "",
+    contact: "2224135285",
+    capacity: "",
+    cur_occ: "",
+    no_occ: "",
+    verified: "",
+    password: ""
+},
+{
+    ngo_name: "Jeevdaya Mangal Vardhini",
+    address: "",
+    loc_coor_lat: "",
+    loc_coor_lon: "",
+    contact: "2225069191",
+    capacity: "",
+    cur_occ: "",
+    no_occ: "",
+    verified: "",
+    password: ""
+},
+{
+    ngo_name: "Plant And Animals Welfare Society",
+    address: "",
+    loc_coor_lat: "",
+    loc_coor_lon: "",
+    contact: "9820161114",
+    capacity: "",
+    cur_occ: "",
+    no_occ: "",
+    verified: "",
+    password: ""
+},
+{
+    ngo_name: "Apna Home Charitable Trust For Animals Welfare",
+    address: "",
+    loc_coor_lat: "",
+    loc_coor_lon: "",
+    contact: "9322191638",
+    capacity: "",
+    cur_occ: "",
+    no_occ: "",
+    verified: "",
+    password: ""
+},
+{
+    ngo_name: "Karuna Parivar Trust",
+    address: "",
+    loc_coor_lat: "",
+    loc_coor_lon: "",
+    contact: "2228763856",
+    capacity: "",
+    cur_occ: "",
+    no_occ: "",
+    verified: "",
+    password: ""
+},]
+    capacity: {
+    cur_occ: {
+    no_occ: {
+    verified: {
