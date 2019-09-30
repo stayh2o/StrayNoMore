@@ -25,9 +25,7 @@ mongoose.connect('mongodb://localhost/straynomore');
 var db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-// app.use(bodyParser.json());
-app.use(bodyParser.json({limit: "50mb", type:'application/json'}));
-app.use(bodyParser.urlencoded({limit: "50mb", extended: true, parameterLimit:50000, type:'application/x-www-form-urlencoding'}));
+app.use(bodyParser.json({limit: "50mb"}));
 
 app.get('/', (req, res) => {
     //console.log(limit)
