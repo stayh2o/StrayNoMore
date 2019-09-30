@@ -1,0 +1,12 @@
+[{
+    ngo_name: "",
+    address: "",
+    loc_coor_lat: "",
+    loc_coor_lon: "",
+    contact: "",
+    capacity: "",
+    cur_occ: "",
+    no_occ: "",
+    verified: "",
+    password: ""
+},
