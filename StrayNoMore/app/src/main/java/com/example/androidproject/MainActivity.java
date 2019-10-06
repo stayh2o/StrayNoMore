@@ -72,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
         name = data.getStringExtra("name");
         phone = data.getStringExtra("phone");
     }
-
+    public String getEmail(){
+        return email;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();

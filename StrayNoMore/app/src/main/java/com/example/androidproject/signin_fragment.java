@@ -43,7 +43,7 @@ public class signin_fragment extends Fragment {
     public signin_fragment() {
         // Required empty public constructor
     }
-    private String url = "http://192.168.43.77:8081/login";
+    private String url ;
     private TextView donthaveaccount;
     private FrameLayout parentframeLayout;
     private EditText email;
@@ -59,6 +59,10 @@ public class signin_fragment extends Fragment {
         password = view.findViewById(R.id.signin_password);
         btn = view.findViewById(R.id.btn_signin);
         parentframeLayout = getActivity().findViewById(R.id.register_framelayout);
+        ipaddress ip = new ipaddress();
+        url = ip.getIp();
+        url = url+"login";
+        Log.d("url",url);
         return view;
     }
 
@@ -99,7 +103,7 @@ public class signin_fragment extends Fragment {
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(),"Wrong la Username or Password",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),"Wrong Username or Password",Toast.LENGTH_LONG).show();
                     }
                 }){
 

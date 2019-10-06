@@ -7,6 +7,7 @@ import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.service.carrier.CarrierMessagingService;
 import android.util.Base64;
 import android.util.Log;
 import android.util.Rational;
@@ -27,7 +28,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.apache.commons.io.FileUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -58,9 +58,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
+import static com.android.volley.VolleyLog.TAG;
+
 
 public class FragmentCam extends Fragment {
-    private String url = "http://192.168.43.77:8081/upload";
+    private String url ;
     private String temp;
     private static final int flash_auto = 0;
     private static final int flash_on = 1;
@@ -74,6 +76,7 @@ public class FragmentCam extends Fragment {
     TextureView imageView;
     ImageButton flash;
     ImageView captured;
+    private String email;
     private EditText cam_Landmark;
     private File file;
     private int flash_mode;
@@ -87,6 +90,9 @@ public class FragmentCam extends Fragment {
         cam_Landmark = (EditText) rootView.findViewById(R.id.cam_Landmark);
         flash_mode = flash_auto;
         flash.setBackgroundResource(R.drawable.flash_auto);
+        ipaddress ip = new ipaddress();
+        url = ip.getIp();
+        url = url+"upload";
         return rootView;
     }
 
@@ -95,6 +101,9 @@ public class FragmentCam extends Fragment {
     public  void onStart(){
         super.onStart();
         startCamera();
+        MainActivity mainActivity = (MainActivity) getActivity() ;
+        email = mainActivity.getEmail();
+        //Log.d("email",email);
         sendServer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +114,6 @@ public class FragmentCam extends Fragment {
                 else{
                     Toast.makeText(getActivity(),"No Picture Clicked", Toast.LENGTH_SHORT).show();
                 }
-                //captured.setVisibility(View.INVISIBLE);
                 file = null;
                 startCamera();
             }
@@ -237,36 +245,10 @@ public class FragmentCam extends Fragment {
         imageView.setTransform(mx);
     }
 
-    public void uploadFile(Uri fileUri){
-        RequestBody landmark = RequestBody.create(MultipartBody.FORM, cam_Landmark.getText().toString());
-        RequestBody found_by_user = RequestBody.create(MultipartBody.FORM, "chatitanyadukkipaty@gmail.com");
-        RequestBody found_lat = RequestBody.create(MultipartBody.FORM, "19.11");
-        RequestBody found_lon = RequestBody.create(MultipartBody.FORM, "72.11");
-
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .baseUrl("http://192.168.43.77:8081/upload")
-                .addConverterFactory(GsonConverterFactory.create());
-
-        Retrofit retrofit = builder.build();
-
-        Call<ResponseBody> call = null;
-        call.enqueue(new Callback<ResponseBody>() {
-            @Override
-            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-
-            }
-
-            @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
-
-            }
-        });
-    }
-
     public void volleyupload(){
         HashMap data = new HashMap();
         data.put("landmark",cam_Landmark.getText().toString());
-        data.put("found_by_user","chaitanyadukkipaty@gmail.com");
+        data.put("found_by_user",email);
         data.put("image",temp);
         data.put("found_lat","19.11");
         data.put("found_lon","72.11");
@@ -275,17 +257,16 @@ public class FragmentCam extends Fragment {
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
+                        Log.d("upload animal",response.toString());
                     }
                 }, new com.android.volley.Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getActivity(),"Image not sent",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getActivity(),"Image not sent",Toast.LENGTH_LONG).show();
             }
         }){
 
         };
         requestQueue.add(jsonObjectRequest);
     }
-
 }

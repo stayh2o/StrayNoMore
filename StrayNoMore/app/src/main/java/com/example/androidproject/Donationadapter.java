@@ -47,6 +47,7 @@ public class Donationadapter extends RecyclerView.Adapter<Donationadapter.MyHold
                 Intent intent = new Intent(context,donation_dialog.class);
                 intent.putExtra("ngoname",ngos.get(f).getngoname());
                 intent.putExtra("ngolocation", ngos.get(f).getngolocation());
+                intent.putExtra("ngocontact", ngos.get(f).getContact());
                 context.startActivity(intent);
             }
         });

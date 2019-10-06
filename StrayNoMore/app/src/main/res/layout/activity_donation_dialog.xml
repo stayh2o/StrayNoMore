@@ -18,10 +18,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText" />
+        app:layout_constraintTop_toBottomOf="@+id/donation_amount" />
 
     <EditText
-        android:id="@+id/editText"
+        android:id="@+id/donation_amount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -32,7 +32,7 @@
         android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ngolocation_dialog_donation" />
+        app:layout_constraintTop_toBottomOf="@+id/ngo_contact" />
 
     <TextView
         android:id="@+id/ngoname_dialog_donation"
@@ -64,4 +64,19 @@
         app:layout_constraintHorizontal_bias="0.512"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ngoname_dialog_donation" />
+
+    <TextView
+        android:id="@+id/ngo_contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="24dp"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:layout_marginEnd="8dp"
+        android:text="Contact"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ngolocation_dialog_donation"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

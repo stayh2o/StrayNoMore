@@ -7,6 +7,9 @@ var mongoose = require('mongoose');
 var User = require('./models/user');
 var Ngo = require('./models/ngo');
 var Animal = require("./models/animal");
+var fs = require('fs');
+var ngodata = require('./ngo.json')
+app.use(express.static('./uploads'))
 
 var storage = multer.diskStorage({
     destination: function(req,file,cb){
@@ -33,12 +36,12 @@ app.get('/', (req, res) => {
 });
 
 app.post('/login',(req,res)=>{
-    console.log("Login");
     User.findOne({email_id:req.body.email_id, password:req.body.password},(error,data)=>{
         if(error){
             return res.sendStatus(404);
         }
         else{
+            console.log("Login");
             res.send(data);
         }
     })
@@ -59,14 +62,23 @@ app.post('/register',(req,res)=>{
 })
 
 app.post('/upload',(req,res)=>{
-    console.log(limit)
+    //console.log(limit)
+    let name = req.body.found_by_user+Date.now()+".jpg"
     var animal = new Animal({
-        img_name: Date.now()+".jpg",
-        img_destination: req.body.image,
+        img_name: name,
+        //img_destination: req.body.image,
         found_by_user: req.body.found_by_user,
         found_lat: req.body.found_lat,
         found_lon: req.body.found_lon
     })
+    fs.writeFile("./uploads/"+name, req.body.image, {encoding: 'base64'}, function(err){
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log("saved");
+        }
+      });
     console.log(animal)
     animal.save(function(err){
         if(err){
@@ -77,6 +89,23 @@ app.post('/upload',(req,res)=>{
             res.sendStatus(200);
         }
     })
+})
+
+app.get('/adoptlist',(req,res)=>{
+    Animal.find({},(error,data)=>{
+        if(error){
+            console.log(error);
+            res.sendStatus(400);
+        }
+        else{
+            res.send(data);
+        }
+
+    })
+})
+
+app.get('/ngolist',(req,res)=>{
+    res.send(ngodata);
 })
 
 //creating a server

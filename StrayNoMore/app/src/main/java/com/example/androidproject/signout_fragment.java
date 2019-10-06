@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +36,7 @@ import java.util.HashMap;
  * A simple {@link Fragment} subclass.
  */
 public class signout_fragment extends Fragment {
-    private String url = "http://192.168.43.77:8081/register";
+    private String url;
     private TextView alreadyaccount;
     private FrameLayout parentframeLayout;
     private Button button;
@@ -57,7 +58,10 @@ public class signout_fragment extends Fragment {
         name = view.findViewById(R.id.signout_name);
         phone = view.findViewById(R.id.phone_number);
         password = view.findViewById(R.id.signout_password);
-
+        ipaddress ip = new ipaddress();
+        url = ip.getIp();
+        url = url+"register";
+        Log.d("url",url);
         return view;
     }
 

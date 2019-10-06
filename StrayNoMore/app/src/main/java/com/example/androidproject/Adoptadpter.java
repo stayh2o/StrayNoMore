@@ -5,9 +5,12 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -38,7 +41,7 @@ public class Adoptadpter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int i){
                 final int f = i;
-                ((Adoptadpter.MessageViewHolder) holder).bind(mDataset.get(i));
+                ((Adoptadpter.MessageViewHolder) holder).bind(mDataset.get(i),context);
                 ((MessageViewHolder) holder).constraintLayout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -46,6 +49,7 @@ public class Adoptadpter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
                         Intent intent = new Intent(context,adopt_dialog.class);
                         intent.putExtra("animalname",mDataset.get(f).getAnimalname());
                         intent.putExtra("ngoname", mDataset.get(f).getNgoname());
+                        intent.putExtra("img_url",mDataset.get(f).getImg_url());
                         context.startActivity(intent);
                     }
                 });
@@ -59,17 +63,23 @@ public class Adoptadpter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     public static class MessageViewHolder extends RecyclerView.ViewHolder {
         public TextView mNgoname, mAnimalname;
+        public ImageView mAnimal;
         ConstraintLayout constraintLayout;
         public MessageViewHolder(ConstraintLayout c) {
             super(c);
             mNgoname = (TextView) c.findViewById(R.id.ngoName);
             mAnimalname = (TextView) c.findViewById(R.id.animalname);
+            mAnimal = (ImageView) c.findViewById(R.id.animalpic);
             constraintLayout = c.findViewById(R.id.adoptLayout);
         }
 
-        void bind(Adopt message){
+        void bind(Adopt message, Context context){
             mNgoname.setText(message.getNgoname());
             mAnimalname.setText(message.getAnimalname());
+
+            Picasso.with(context)
+                    .load(message.getImg_url())
+                    .into(mAnimal);
         }
     }
 
