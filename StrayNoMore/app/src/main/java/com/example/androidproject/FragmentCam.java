@@ -1,9 +1,13 @@
 package com.example.androidproject;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -54,6 +58,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringReader;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -61,7 +66,7 @@ import java.util.HashMap;
 import static com.android.volley.VolleyLog.TAG;
 
 
-public class FragmentCam extends Fragment {
+public class FragmentCam extends Fragment implements LocationListener {
     private String url ;
     private String temp;
     private static final int flash_auto = 0;
@@ -80,6 +85,10 @@ public class FragmentCam extends Fragment {
     private EditText cam_Landmark;
     private File file;
     private int flash_mode;
+    LocationManager locationManager;
+    private String lat;
+    private String lon;
+
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView = inflater.inflate(R.layout.fragment_cam,container,false);
         sendButton = (ImageButton) rootView.findViewById(R.id.maincamera);
@@ -93,6 +102,9 @@ public class FragmentCam extends Fragment {
         ipaddress ip = new ipaddress();
         url = ip.getIp();
         url = url+"upload";
+
+        //LocationManager locationManager = (LocationManager) getSystem
+
         return rootView;
     }
 
@@ -101,6 +113,7 @@ public class FragmentCam extends Fragment {
     public  void onStart(){
         super.onStart();
         startCamera();
+        getLocation();
         MainActivity mainActivity = (MainActivity) getActivity() ;
         email = mainActivity.getEmail();
         //Log.d("email",email);
@@ -249,8 +262,8 @@ public class FragmentCam extends Fragment {
         HashMap data = new HashMap();
         data.put("landmark",cam_Landmark.getText().toString());
         data.put("found_by_user",email);
-        data.put("found_lat","19.11");
-        data.put("found_lon","72.11");
+        data.put("found_lat",lat);
+        data.put("found_lon",lon);
         data.put("image",temp);
         Log.d("datacheck",email);
         cam_Landmark.setText("");
@@ -270,5 +283,45 @@ public class FragmentCam extends Fragment {
 
         };
         requestQueue.add(jsonObjectRequest);
+    }
+
+    void getLocation(){
+        try{
+            Log.d("location","Testy test");
+            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+            Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            if(location!=null){
+                onLocationChanged(location);
+            }
+            else{
+                Toast.makeText(getActivity(),"Cant get coordinates",Toast.LENGTH_LONG).show();
+            }
+        }
+        catch (SecurityException e){
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        lat = String.valueOf(location.getLatitude());
+        lon = String.valueOf(location.getLongitude());
+        Log.d("location",location.toString());
+        Toast.makeText(getActivity(),lat+" "+lon,Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+        Toast.makeText(getActivity(),"Please enable GPS and Internet",Toast.LENGTH_LONG).show();
     }
 }
