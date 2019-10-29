@@ -61,8 +61,11 @@ public class FragmentAdopt extends Fragment {
                     for (int i = 0; i < response.length(); i++) {
                         JSONObject adoptdata = response.getJSONObject(i);
                         String ngo_name = adoptdata.getString("found_by_ngo");
+                        String animal_name = adoptdata.getString("animal_name");
                         String img_url = url+ adoptdata.getString("img_name");
-                        list.add(new Adopt("Doggo",ngo_name, img_url));
+                        list.add(new Adopt(animal_name,ngo_name, img_url));
+                        adoptadpter.notifyDataSetChanged();
+                        recyclerView.scrollToPosition(list.size()-1);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

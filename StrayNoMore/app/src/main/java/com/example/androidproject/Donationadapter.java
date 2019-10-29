@@ -43,7 +43,7 @@ public class Donationadapter extends RecyclerView.Adapter<Donationadapter.MyHold
         myholder.relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(context,"You clicked "+ngos.get(f).getngoname(),Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,"You clicked "+ngos.get(f).getngoname(),Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(context,donation_dialog.class);
                 intent.putExtra("ngoname",ngos.get(f).getngoname());
                 intent.putExtra("ngolocation", ngos.get(f).getngolocation());

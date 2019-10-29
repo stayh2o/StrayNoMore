@@ -34,7 +34,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    private String email;
+    private static String email;
     private String name;
     private String phone;
     TabLayout tabLayout;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         name = data.getStringExtra("name");
         phone = data.getStringExtra("phone");
     }
-    public String getEmail(){
+    public static String getEmail(){
         return email;
     }
     @Override

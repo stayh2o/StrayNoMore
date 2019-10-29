@@ -64,6 +64,8 @@ public class FragmentDonation extends Fragment {
                         String ngo_location = ngodata.getString("address");
                         String contact = ngodata.getString("contact");
                         list.add(new NGO(ngoname,ngo_location, contact));
+                        donationadapter.notifyDataSetChanged();
+                        recyclerView.scrollToPosition(list.size()-1);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

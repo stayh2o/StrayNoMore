@@ -174,7 +174,7 @@ public class FragmentCam extends Fragment {
                         temp = Base64.encodeToString(b, Base64.DEFAULT);
                         captured.setImageBitmap(bitmap);
                         //captured.setVisibility(View.VISIBLE);
-                        Toast.makeText(getActivity(),bitmap.toString(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(),"Saved",Toast.LENGTH_LONG).show();
                         CameraX.unbindAll();
                     }
                     @Override
@@ -249,9 +249,11 @@ public class FragmentCam extends Fragment {
         HashMap data = new HashMap();
         data.put("landmark",cam_Landmark.getText().toString());
         data.put("found_by_user",email);
-        data.put("image",temp);
         data.put("found_lat","19.11");
         data.put("found_lon","72.11");
+        data.put("image",temp);
+        Log.d("datacheck",email);
+        cam_Landmark.setText("");
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data),
                 new com.android.volley.Response.Listener<JSONObject>() {
