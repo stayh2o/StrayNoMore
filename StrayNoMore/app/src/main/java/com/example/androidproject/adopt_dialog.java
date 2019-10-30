@@ -32,6 +32,9 @@ public class adopt_dialog extends AppCompatActivity {
     private String url ;
     String animal_name;
     String ngo_name;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,7 +53,8 @@ public class adopt_dialog extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 volleyupload();
-                Toast.makeText(context,email,Toast.LENGTH_LONG).show();
+                //Toast.makeText(context,email,Toast.LENGTH_LONG).show();
+                finish();
             }
         });
         animal_name = getIntent().getStringExtra("animalname");
@@ -74,7 +78,6 @@ public class adopt_dialog extends AppCompatActivity {
                 new com.android.volley.Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-
                     }
                 }, new com.android.volley.Response.ErrorListener() {
             @Override

@@ -18,7 +18,9 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.gson.JsonObject;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -42,7 +44,9 @@ public class MyAccount extends AppCompatActivity {
     private String email;
     private String url = "http://192.168.43.77:8081/";
     private String imgurl;
+    //private String email;
     private CircleImageView circleImageView;
+    private TextView textView;
     ArrayList<Rescue> list = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +60,7 @@ public class MyAccount extends AppCompatActivity {
         acc_name = (TextView) findViewById(R.id.account_name);
         acc_phone = (TextView) findViewById(R.id.account_number);
         circleImageView = (CircleImageView) findViewById(R.id.profileImg);
+        textView = (TextView) findViewById(R.id.paisa_contri);
         toolbar = findViewById(R.id.toolbar_help);
         setSupportActionBar(toolbar);
         context = this;
@@ -64,6 +69,7 @@ public class MyAccount extends AppCompatActivity {
         acc_email.setText(data.getStringExtra("email_id"));
         acc_name.setText(data.getStringExtra("name"));
         acc_phone.setText(data.getStringExtra("phone"));
+        //email = MainActivity.getEmail();
 
         imgurl = url+data.getStringExtra("email_id")+"_profilepic.jpg";
 
@@ -78,7 +84,7 @@ public class MyAccount extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         //Log.d("test",list.toString());
-
+        getamount();
         recyclerView = findViewById(R.id.rescued);
         recyclerView.hasFixedSize();
         layoutManager = new LinearLayoutManager(this);
@@ -103,7 +109,7 @@ public class MyAccount extends AppCompatActivity {
                         JSONObject adoptdata = response.getJSONObject(i);
                         String ngo_name = adoptdata.getString("found_by_ngo");
                         String status = adoptdata.getString("status");
-                        String img_url = url+ adoptdata.getString("img_name");
+                        String img_url = url+ adoptdata.getString("img_addr");
                         list.add(new Rescue(status,ngo_name, img_url));
                         Log.d("test",list.get(i).getStatus()+list.get(i).getNgoname()+list.get(i).getImg_url());
                         rescuedAdapter.notifyDataSetChanged();
@@ -123,6 +129,34 @@ public class MyAccount extends AppCompatActivity {
 
         };
         requestQueue.add(jsonArrayRequest);
+    }
+
+    public void getamount(){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String dataurl = url+"user/"+email;
+        Log.d("url",dataurl);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, dataurl, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                //acc_name.setText("YOLO");
+                try {
+                    Integer i = response.getInt("amount_don");
+                    String am = String.valueOf(i);
+                    textView.setText(am);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getBaseContext(),"Data not loaded myaccount",Toast.LENGTH_LONG).show();
+            }
+        }){
+
+        };
+        requestQueue.add(jsonObjectRequest);
     }
     private void linearlist(){
         list = new ArrayList<Rescue>();

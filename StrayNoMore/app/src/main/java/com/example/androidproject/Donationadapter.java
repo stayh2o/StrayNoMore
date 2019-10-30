@@ -48,6 +48,7 @@ public class Donationadapter extends RecyclerView.Adapter<Donationadapter.MyHold
                 intent.putExtra("ngoname",ngos.get(f).getngoname());
                 intent.putExtra("ngolocation", ngos.get(f).getngolocation());
                 intent.putExtra("ngocontact", ngos.get(f).getContact());
+                intent.putExtra("ngoemail", ngos.get(f).getEmail());
                 context.startActivity(intent);
             }
         });

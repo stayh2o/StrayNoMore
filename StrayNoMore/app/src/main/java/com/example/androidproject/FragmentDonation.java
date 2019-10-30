@@ -63,7 +63,8 @@ public class FragmentDonation extends Fragment {
                         String ngoname = ngodata.getString("ngo_name");
                         String ngo_location = ngodata.getString("address");
                         String contact = ngodata.getString("contact");
-                        list.add(new NGO(ngoname,ngo_location, contact));
+                        String email = ngodata.getString("email");
+                        list.add(new NGO(ngoname,ngo_location, contact, email));
                         donationadapter.notifyDataSetChanged();
                         recyclerView.scrollToPosition(list.size()-1);
                     }
@@ -81,9 +82,9 @@ public class FragmentDonation extends Fragment {
         };
         requestQueue.add(jsonArrayRequest);
     }
-    private void linearlist(){
-        list = new ArrayList<NGO>();
-        list.add(new NGO("PETA India","Dadar", "9969199986"));
-        list.add(new NGO("Wild World","JBnagar","9757328434"));
-    }
+//    private void linearlist(){
+//        list = new ArrayList<NGO>();
+//        list.add(new NGO("PETA India","Dadar", "9969199986"));
+//        list.add(new NGO("Wild World","JBnagar","9757328434"));
+//    }
 }

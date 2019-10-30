@@ -54,8 +54,9 @@ public class signout_fragment extends Fragment {
     private EditText name;
     private EditText phone;
     private EditText password;
+    private EditText cpassword;
     CircleImageView circleImageView;
-    private String imgbase64;
+    private String imgbase64="p";
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,6 +72,7 @@ public class signout_fragment extends Fragment {
         name = view.findViewById(R.id.signout_name);
         phone = view.findViewById(R.id.phone_number);
         password = view.findViewById(R.id.signout_password);
+        cpassword = view.findViewById(R.id.signout_confirmpassword);
         circleImageView = view.findViewById(R.id.logosignup);
         ipaddress ip = new ipaddress();
         url = ip.getIp();
@@ -107,38 +109,48 @@ public class signout_fragment extends Fragment {
                 final String signup_password = password.getText().toString();
                 final String signup_phone = phone.getText().toString();
                 final String signup_name = name.getText().toString();
-                HashMap data = new HashMap();
-                data.put("email_id",signup_email);
-                data.put("password",signup_password);
-                data.put("name",signup_name);
-                data.put("phone",signup_phone);
-                data.put("image",imgbase64);
-                RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data),
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
-                                Intent intent = new Intent(getActivity(),MainActivity.class);
-                                try {
-                                    intent.putExtra("email_id",response.getString("email_id"));
-                                    intent.putExtra("name",response.getString("name"));
-                                    intent.putExtra("phone",response.getString("phone"));
-                                    startActivity(intent);
-                                }catch (JSONException e){
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(),"Wrong la Username or Password",Toast.LENGTH_LONG).show();
-                    }
-                }){
+                final String signup_cpassword = cpassword.getText().toString();
 
-                };
-                requestQueue.add(jsonObjectRequest);
+                String status = check(signup_email,signup_password,signup_phone,signup_name,signup_cpassword, imgbase64);
+                if(status == "Pass"){
+                    HashMap data = new HashMap();
+                    data.put("email_id",signup_email);
+                    data.put("password",signup_password);
+                    data.put("name",signup_name);
+                    data.put("phone",signup_phone);
+                    data.put("image",imgbase64);
+                    RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data),
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    Intent intent = new Intent(getActivity(),MainActivity.class);
+                                    try {
+                                        intent.putExtra("email_id",response.getString("email_id"));
+                                        intent.putExtra("name",response.getString("name"));
+                                        intent.putExtra("phone",response.getString("phone"));
+                                        startActivity(intent);
+                                    }catch (JSONException e){
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Toast.makeText(getActivity(),"Wrong la Username or Password",Toast.LENGTH_LONG).show();
+                        }
+                    }){
+
+                    };
+                    requestQueue.add(jsonObjectRequest);
+                }
+                else {
+                    Toast.makeText(getActivity(),status,Toast.LENGTH_LONG).show();
+                }
+
             }
         });
+
     }
 
     public void setFragment(Fragment fragment){
@@ -168,6 +180,28 @@ public class signout_fragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+    }
+    static boolean isValid(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
+    }
+
+    public String check(String signup_email,String signup_password,String signup_phone,String signup_name,String signup_cpassword, String imgbase64){
+        if(signup_cpassword.isEmpty() || signup_email.isEmpty() || signup_phone.isEmpty() || signup_password.isEmpty() || imgbase64.isEmpty()){
+            return "Fields are empty";
+        }
+        else if(!(signup_password.equals(signup_cpassword))) {
+            return "Password don't match";
+        }
+        else if(! (signup_phone.length()==10 || signup_phone.length()==11 || signup_phone.length()==8)){
+            return "Contact number size is wrong";
+        }
+        else if(! isValid(signup_email)){
+            return "Email Id format is worng";
+        }
+        else{
+            return "Pass";
         }
     }
 }

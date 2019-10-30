@@ -26,7 +26,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 public class FragmentAdopt extends Fragment {
-    private String url ;
+    private String url = "http://192.168.43.77:8081/";
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     Adoptadpter adoptadpter;
@@ -35,18 +35,33 @@ public class FragmentAdopt extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View rootView =  inflater.inflate(R.layout.fragmet_adopt,container,false);
-        getdata();
+
         recyclerView = rootView.findViewById(R.id.recyclerview_adopt);
         recyclerView.hasFixedSize();
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-
+        getdata();
         adoptadpter = new Adoptadpter(getActivity(),this.list);
         recyclerView.setAdapter(adoptadpter);
         recyclerView.smoothScrollToPosition(adoptadpter.getItemCount());
-        ipaddress ip = new ipaddress();
-        url = ip.getIp();
+//        ipaddress ip = new ipaddress();
+//        url = ip.getIp();
         return rootView;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+       // Toast.makeText(getActivity(),"Pausey",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //Toast.makeText(getActivity(),"Resumey",Toast.LENGTH_LONG).show();
+        adoptadpter.notifyDataSetChanged();
+
+
     }
 
     public void getdata(){
@@ -62,7 +77,8 @@ public class FragmentAdopt extends Fragment {
                         JSONObject adoptdata = response.getJSONObject(i);
                         String ngo_name = adoptdata.getString("found_by_ngo");
                         String animal_name = adoptdata.getString("animal_name");
-                        String img_url = url+ adoptdata.getString("img_name");
+                        String img_url = url+ adoptdata.getString("img_addr");
+                        //Toast.makeText(getActivity(),animal_name,Toast.LENGTH_LONG).show();
                         list.add(new Adopt(animal_name,ngo_name, img_url));
                         adoptadpter.notifyDataSetChanged();
                         recyclerView.scrollToPosition(list.size()-1);
