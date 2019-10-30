@@ -1,7 +1,9 @@
 package com.example.androidproject;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
@@ -62,6 +64,23 @@ public class signout_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("userinfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+
+        if (sharedPref.contains("abcd") && sharedPref.getBoolean("abcd", false)) {
+            String email_id = sharedPref.getString("email_id", "");
+            String name = sharedPref.getString("name", "");
+            String phone = sharedPref.getString("phone", "");
+            Intent intent = new Intent(getActivity(),MainActivity.class);
+            intent.putExtra("email_id",email_id);
+            intent.putExtra("name",name);
+            intent.putExtra("phone",phone);
+            Toast.makeText(getActivity(), "gg",Toast.LENGTH_LONG).show();
+
+            startActivity(intent);
+        }
+
         View view = inflater.inflate(R.layout.fragment_signout_fragment, container, false);
         alreadyaccount = view.findViewById(R.id.signin_in_signup);
         parentframeLayout = getActivity().findViewById(R.id.register_framelayout);
@@ -124,11 +143,20 @@ public class signout_fragment extends Fragment {
                             new Response.Listener<JSONObject>() {
                                 @Override
                                 public void onResponse(JSONObject response) {
+
                                     Intent intent = new Intent(getActivity(),MainActivity.class);
                                     try {
+                                        SharedPreferences sharedPref = getActivity().getSharedPreferences("userinfo", Context.MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPref.edit();
                                         intent.putExtra("email_id",response.getString("email_id"));
                                         intent.putExtra("name",response.getString("name"));
                                         intent.putExtra("phone",response.getString("phone"));
+                                        editor.putBoolean("abcd",true);
+                                        editor.putString("email_id",signup_email);
+                                        editor.putString("name",signup_name);
+                                        editor.putString("phone",signup_phone);
+                                        editor.commit();
+
                                         startActivity(intent);
                                     }catch (JSONException e){
                                         e.printStackTrace();

@@ -1,7 +1,9 @@
 package com.example.androidproject;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -53,6 +55,21 @@ public class signin_fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("userinfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+
+
+        if (sharedPref.contains("abcd") ) {
+            String email_id = sharedPref.getString("email_id", "");
+            String name = sharedPref.getString("name", "");
+            String phone = sharedPref.getString("phone", "");
+            Intent intent = new Intent(getActivity(),MainActivity.class);
+            intent.putExtra("email_id",email_id);
+            intent.putExtra("name",name);
+            intent.putExtra("phone",phone);
+            Toast.makeText(getActivity(), "gg",Toast.LENGTH_LONG).show();
+            startActivity(intent);
+        }
         View view = inflater.inflate(R.layout.fragment_signin_fragment, container, false);
         donthaveaccount = view.findViewById(R.id.signup_in_signin);
         email = view.findViewById(R.id.signin_email);
@@ -90,11 +107,21 @@ public class signin_fragment extends Fragment {
                         new Response.Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response) {
+                                SharedPreferences sharedPref = getActivity().getSharedPreferences("userinfo", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor editor = sharedPref.edit();
                                 Intent intent = new Intent(getActivity(),MainActivity.class);
                                 try {
-                                    intent.putExtra("email_id",response.getString("email_id"));
-                                    intent.putExtra("name",response.getString("name"));
-                                    intent.putExtra("phone",response.getString("phone"));
+                                    String email_id = response.getString("email_id");
+                                    String name = response.getString("name");
+                                    String phone = response.getString("phone");
+                                    intent.putExtra("email_id",email_id);
+                                    intent.putExtra("name",name);
+                                    intent.putExtra("phone",phone);
+                                    editor.putBoolean("abcd",true);
+                                    editor.putString("email_id",email_id);
+                                    editor.putString("name",name);
+                                    editor.putString("phone",phone);
+                                    editor.commit();
                                     startActivity(intent);
                                 }catch (JSONException e){
                                     e.printStackTrace();

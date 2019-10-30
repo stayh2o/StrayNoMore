@@ -1,7 +1,9 @@
 package com.example.androidproject;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
@@ -90,6 +92,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout_menu:
+                SharedPreferences sharedPref = getSharedPreferences("userinfo", Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.clear().apply();
                 Intent intent = new Intent(this, RegisterActivity.class);
                 startActivity(intent);
                 Toast.makeText(this, "You Clicked Logout",Toast.LENGTH_LONG).show();
