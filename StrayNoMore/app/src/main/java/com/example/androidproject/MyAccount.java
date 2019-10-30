@@ -19,6 +19,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,17 +28,21 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class MyAccount extends AppCompatActivity {
     private TextView acc_name;
     private TextView acc_email;
     private TextView acc_phone;
-    //Toolbar toolbar;
+    Toolbar toolbar;
     Context context;
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
     RescuedAdapter rescuedAdapter;
     private String email;
     private String url = "http://192.168.43.77:8081/";
+    private String imgurl;
+    private CircleImageView circleImageView;
     ArrayList<Rescue> list = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +55,9 @@ public class MyAccount extends AppCompatActivity {
         acc_email = (TextView) findViewById(R.id.account_email);
         acc_name = (TextView) findViewById(R.id.account_name);
         acc_phone = (TextView) findViewById(R.id.account_number);
+        circleImageView = (CircleImageView) findViewById(R.id.profileImg);
+        toolbar = findViewById(R.id.toolbar_help);
+        setSupportActionBar(toolbar);
         context = this;
 
 
@@ -57,7 +65,11 @@ public class MyAccount extends AppCompatActivity {
         acc_name.setText(data.getStringExtra("name"));
         acc_phone.setText(data.getStringExtra("phone"));
 
+        imgurl = url+data.getStringExtra("email_id")+"_profilepic.jpg";
 
+        Picasso.with(context)
+                .load(imgurl)
+                .into(circleImageView);
 
         ipaddress ip = new ipaddress();
     }
@@ -65,7 +77,8 @@ public class MyAccount extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("test",list.toString());
+        //Log.d("test",list.toString());
+
         recyclerView = findViewById(R.id.rescued);
         recyclerView.hasFixedSize();
         layoutManager = new LinearLayoutManager(this);

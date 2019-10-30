@@ -1,6 +1,9 @@
 var mongoose = require('mongoose');
 //MongoDB schema for users
 module.exports = mongoose.model("User", {
+    img_name:{
+        type: String
+    },
     name: {
         type: String,
         required:true

@@ -21,15 +21,25 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
                 <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/logo"
+                    android:id="@+id/logosignup"
                     android:layout_marginTop="8dp"
                     app:civ_border_color="@color/colorPrimary"
                     app:civ_border_width="5dp"
                     android:src="@drawable/logo_white"
                     android:elevation="6dp"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="200dp"
                     android:layout_marginBottom="8dp"
+                    />
+                <Button
+                    android:id="@+id/uploadimg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Upload Imgae"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@android:color/white"
+                    android:padding="5dp"
                     />
 
                 <EditText

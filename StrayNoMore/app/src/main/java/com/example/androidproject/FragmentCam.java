@@ -73,9 +73,6 @@ public class FragmentCam extends Fragment implements LocationListener {
     private static final int flash_on = 1;
     private static final int flash_off = 2;
     private Bitmap bitmap;
-    private final String twoHypens = "--";
-    private final String lineEnd = "\r\n";
-    private final String boundary = "apiclient-"+ System.currentTimeMillis();
     ImageButton sendButton;
     ImageButton sendServer;
     TextureView imageView;

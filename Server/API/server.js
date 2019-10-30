@@ -170,8 +170,25 @@ app.post('/login',(req,res)=>{
 
 app.post('/register',(req,res)=>{
     console.log(req.body.name)
-    var per = new User(req.body);
+    let name = req.body.email_id+"_profilepic.jpg"
+    var per = new User({
+        img_name : name,
+        name : req.body.name,
+        email_id : req.body.email_id,
+        password : req.body.password,
+        phone : req.body.phone
+    });
     console.log("Register");
+
+    fs.writeFile("./uploads/"+name, req.body.image, {encoding: 'base64'}, function(err){
+        if(err){
+            console.log(err);
+        }
+        else{
+            console.log("saved");
+        }
+      });
+
     per.save((error,tx)=>{
         if(error){
             res.sendStatus(404);

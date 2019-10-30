@@ -2,6 +2,8 @@ package com.example.androidproject;
 
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,6 +11,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,21 +33,29 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.HashMap;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class signout_fragment extends Fragment {
+    public static final int PICK_IMAGE = 1;
     private String url;
     private TextView alreadyaccount;
     private FrameLayout parentframeLayout;
+    private Button uploadimg;
     private Button button;
     private EditText email;
     private EditText name;
     private EditText phone;
     private EditText password;
+    CircleImageView circleImageView;
+    private String imgbase64;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -54,10 +66,12 @@ public class signout_fragment extends Fragment {
         parentframeLayout = getActivity().findViewById(R.id.register_framelayout);
 
         button = view.findViewById(R.id.btn_signout);
+        uploadimg = view.findViewById(R.id.uploadimg);
         email = view.findViewById(R.id.signout_email);
         name = view.findViewById(R.id.signout_name);
         phone = view.findViewById(R.id.phone_number);
         password = view.findViewById(R.id.signout_password);
+        circleImageView = view.findViewById(R.id.logosignup);
         ipaddress ip = new ipaddress();
         url = ip.getIp();
         url = url+"register";
@@ -76,6 +90,16 @@ public class signout_fragment extends Fragment {
             }
         });
 
+        uploadimg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setType("image/*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE);
+            }
+        });
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -88,6 +112,7 @@ public class signout_fragment extends Fragment {
                 data.put("password",signup_password);
                 data.put("name",signup_name);
                 data.put("phone",signup_phone);
+                data.put("image",imgbase64);
                 RequestQueue requestQueue = Volley.newRequestQueue(getActivity());
                 JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, new JSONObject(data),
                         new Response.Listener<JSONObject>() {
@@ -121,5 +146,28 @@ public class signout_fragment extends Fragment {
         fragmentTransaction.setCustomAnimations(R.anim.silde_from_left,R.anim.slide_out_from_right);
         fragmentTransaction.replace(parentframeLayout.getId(),fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PICK_IMAGE  && data != null && data.getData() != null) {
+
+            Uri uri = data.getData();
+
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), uri);
+                // Log.d(TAG, String.valueOf(bitmap));
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] b = baos.toByteArray();
+                imgbase64 = Base64.encodeToString(b, Base64.DEFAULT);
+                circleImageView.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
