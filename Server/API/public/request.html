@@ -46,6 +46,9 @@
           <li class="nav-item">
                 <a class="nav-link js-scroll-trigger" href="#request">Requests</a>
               </li>
+              <li class="nav-item">
+                  <a class="nav-link js-scroll-trigger" href="#donation">Donations</a>
+                </li>
               <li>
                 <a href="/putadopt/{{data.email}}" class="btn btn-primary btn-xl text-uppercase js-scroll-trigger " style="background-color: brown">Put for Adopt </a>
             </li>
@@ -85,6 +88,22 @@
                     </div>
                   </div>
       </section>
+      <div class="container-fluid p-0">
+          <section id="donation">
+              <div class="container">
+                      <div class="row row-centered">
+                        <div class="col-lg-12 mx-auto ">
+                          <h2 class="text-white mb-4 ">Donations</h2>
+                          <!-- <button class"btn btn-primary btn-xl text-uppercase" onclick="loadDoc()">Get responses<button> -->
+                          <p id="demo1"></p>
+                         
+  
+                        </div>
+                      </div>
+                    </div>
+        </section>
+        </div>
+
       <hr class="m-0">
 
       
@@ -102,6 +121,23 @@ function loadDoc() {
   xhttp.send();
 }
 
+function loadDoc1() {
+  var xhttp = new XMLHttpRequest();
+  var ngo_email = document.getElementById("ngo_email").innerHTML
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      document.getElementById("demo1").innerHTML = this.responseText;
+    }
+  };
+  xhttp.open("GET", "/donate/"+ngo_email, true);
+  xhttp.send();
+}
+
+function getdata(){
+  loadDoc();
+  loadDoc1();
+}
+
 function helper(data) {
   var xhttp = new XMLHttpRequest();
   var ngo_name = document.getElementById("ngo_name").innerHTML
@@ -115,7 +151,8 @@ function helper(data) {
   xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   xhttp.send(`img_name=${data}&found_by_ngo=${ngo_name}&found_by_ngo_email=${ngo_email}`);
 }
-window.onload = loadDoc;
+window.onload = getdata;
+//window.onload = loadDoc1;
 </script>
     </script>
     <!-- Bootstrap core JavaScript -->

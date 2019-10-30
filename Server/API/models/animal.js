@@ -1,10 +1,7 @@
 var mongoose = require('mongoose');
 //MongoDB schema for Animal
 module.exports = mongoose.model("Animal", {
-    img_name:{
-        type: String
-    },
-    img_destination:{
+    img_addr:{
         type: String
     },
     animal_name:{

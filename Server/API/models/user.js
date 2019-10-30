@@ -1,7 +1,7 @@
 var mongoose = require('mongoose');
 //MongoDB schema for users
 module.exports = mongoose.model("User", {
-    img_name:{
+    img_addr:{
         type: String
     },
     name: {
@@ -22,7 +22,7 @@ module.exports = mongoose.model("User", {
     },
     verified: {
         type: Boolean,
-        default: false
+        default: true
     },
     amount_don: {
         type: Number,
